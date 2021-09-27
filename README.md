@@ -129,7 +129,7 @@ fi
 
 
 ### 8. Setup port forwarding and DNS
-- WireGuard Port: `51820`
+- WireGuard UDP Port: `51820`
 
 
 
