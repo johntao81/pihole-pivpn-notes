@@ -65,7 +65,7 @@ sudo systemctl status cloudflared
 - Update PiHole's DNS: `127.0.0.1#5053`
 
 
-### 4. Install PiVPN Wireguard
+### 4. Install PiVPN WireGuard
 1. `curl -L https://install.pivpn.io | bash`
 2. Add users: `pivpn add`
 3. Display QR code: `pivpn -qr`
@@ -126,6 +126,12 @@ fi
 ```
 
 - Set console auto login: `sudo raspi-config`
+
+
+### 8. Setup port forwarding and DNS
+- WireGuard Port: `51820`
+
+
 
 
 ### LCD troubleshooting
