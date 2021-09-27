@@ -7,10 +7,14 @@ Notes for installing PiHole and PiVPN on Raspberry Pi
 - `ssh raspberrypi.local`
 - `sudo raspi-config`
  - 1 System Options
-   - S3 Password: change password
-   - S4 Hostname: change hostname
+   - S3 Password
+   - S4 Hostname
  - 5 Localisation Options
-   - L2 Timezone: change timezone
+   - L2 Timezone
+ - 3 Interface Options
+   - P1 Camera
+   - P3 VNC (desktop)
+   - P5 I2C (SSD1306)
 - `sudo apt update -y && sudo apt upgrade -y && sudo apt autoremove -y`
 
 
