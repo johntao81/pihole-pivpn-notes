@@ -1,38 +1,45 @@
 # pihole-pivpn-notes
 Notes for installing PiHole and PiVPN on Raspberry Pi
 
-sudo raspi-config
-change password
-change hostname
-enable camera
-enable SPI (for lcd)
-enable wifi (optional)
-enable vnc (only on desktop mode)
-change timezone
-
-sudo apt update -y && sudo apt upgrade -y && sudo apt autoremove -y
-
-
-curl -sSL https://install.pi-hole.net | bash
-pihole -a -p
+### 1. Prepare the Raspberry Pi
+- Download the Raspberry Pi OS Lite image: https://www.raspberrypi.org/software/operating-systems/
+- Create the `ssh` file to enable ssh
+- `ssh raspberrypi.local`
+- `sudo raspi-config`
+ - 1 System Options
+   - S3 Password: change password
+   - S4 Hostname: change hostname
+ - 5 Localisation Options
+   - L2 Timezone: change timezone
+- `sudo apt update -y && sudo apt upgrade -y && sudo apt autoremove -y`
 
 
-# cloudfared DoH
-wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-arm
-sudo cp ./cloudflared-linux-arm /usr/local/bin/cloudflared
-sudo chmod +x /usr/local/bin/cloudflared
+### 2. Install PiHole
+- `curl -sSL https://install.pi-hole.net | bash`
+- Change password: `pihole -a -p`
+
+
+### 3. Install cloudflared (DoH)
+Reference: https://docs.pi-hole.net/guides/dns/cloudflared/
+```
+wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-arm && \
+sudo cp ./cloudflared-linux-arm /usr/local/bin/cloudflared && \
+sudo chmod +x /usr/local/bin/cloudflared && \
 cloudflared -v
+```
 
-sudo useradd -s /usr/sbin/nologin -r -M cloudflared
-sudo nano /etc/default/cloudflared
+- `sudo useradd -s /usr/sbin/nologin -r -M cloudflared`
+- `sudo nano /etc/default/cloudflared`
+```
 # Commandline args for cloudflared, using Cloudflare DNS
 CLOUDFLARED_OPTS=--port 5053 --upstream https://1.1.1.1/dns-query --upstream https://1.0.0.1/dns-query
-
-
-sudo chown cloudflared:cloudflared /etc/default/cloudflared
+```
+```
+sudo chown cloudflared:cloudflared /etc/default/cloudflared && \
 sudo chown cloudflared:cloudflared /usr/local/bin/cloudflared
-
-sudo nano /etc/systemd/system/cloudflared.service
+```
+- `sudo nano /etc/systemd/system/cloudflared.service`
+```
 [Unit]
 Description=cloudflared DNS over HTTPS proxy
 After=syslog.target network-online.target
@@ -48,70 +55,65 @@ KillMode=process
 
 [Install]
 WantedBy=multi-user.target
-
-
-sudo systemctl enable cloudflared
-sudo systemctl start cloudflared
+```
+```
+sudo systemctl enable cloudflared && \
+sudo systemctl start cloudflared && \
 sudo systemctl status cloudflared
-
-# test doh
-dig @127.0.0.1 -p 5053 google.com
-
-
-
-# update pihole's dns
-127.0.0.1#5053
+```
+- Test DoH: `dig @127.0.0.1 -p 5053 google.com`
+- Update PiHole's DNS: `127.0.0.1#5053`
 
 
-# pivpn wireguard
-curl -L https://install.pivpn.io | bash
-pivpn add
-pivpn -qr
+### 4. Install PiVPN Wireguard
+1. `curl -L https://install.pivpn.io | bash`
+2. Add users: `pivpn add`
+3. Display QR code: `pivpn -qr`
 
 
-# LCD-show (broken)
-# https://github.com/goodtft/LCD-show/
-sudo rm -rf LCD-show
-git clone https://github.com/goodtft/LCD-show.git
-chmod -R 755 LCD-show
+
+### 5. Set up LCD-show
+- References: https://medium.com/@avik.das/setting-up-an-lcd-screen-on-the-raspberry-pi-2018-edition-d0b2792783cd https://avikdas.com/2018/12/31/setting-up-lcd-screen-on-raspberry-pi.html
+```
+sudo rm -rf LCD-show && \
+git clone https://github.com/goodtft/LCD-show.git && \
+chmod -R 755 LCD-show && \
 cd LCD-show/
-sudo ./LCD35-show
-
-
-# LCD-show manual install
-# https://medium.com/@avik.das/setting-up-an-lcd-screen-on-the-raspberry-pi-2018-edition-d0b2792783cd
-# https://avikdas.com/2018/12/31/setting-up-lcd-screen-on-raspberry-pi.html
-sudo rm -rf LCD-show
-git clone https://github.com/goodtft/LCD-show.git
-chmod -R 755 LCD-show
-cd LCD-show/
-sudo cp ./usr/tft35a-overlay.dtb /boot/overlays/tft35a.dtbo
-sudo nano /boot/config.txt
+```
+1. `sudo cp ./usr/tft35a-overlay.dtb /boot/overlays/tft35a.dtbo`
+2. `sudo nano /boot/config.txt`
+```
 hdmi_force_hotplug=1
 dtparam=i2c_arm=on
 dtparam=spi=on
 enable_uart=1
 dtoverlay=tft35a:rotate=90
-
-sudo nano /boot/cmdline.txt
+```
+3. `sudo nano /boot/cmdline.txt`
+```
 fbcon=map:10 fbcon=font:ProFont6x11
+```
 
+### 6. Change the console fonts
+- `sudo dpkg-reconfigure console-setup`
 
-# change console fonts
-sudo dpkg-reconfigure console-setup
+Alternatively:
+```
 sudo nano /etc/default/console-setup
 FONTFACE="Terminus"
 FONTSIZE="8x14"
+```
 
-
-# download padd
-cd ~
-wget -N https://raw.githubusercontent.com/pi-hole/PADD/master/padd.sh
+### 7. Setup PADD
+```
+cd ~ && \
+wget -N https://raw.githubusercontent.com/pi-hole/PADD/master/padd.sh && \
 sudo chmod +x padd.sh
+```
 
 
-# auto start PADD
-nano ~/.bashrc
+- Auto start script: `nano ~/.bashrc`
+```
 # Run PADD
 # If we’re on the PiTFT screen (ssh is xterm)
 if [ "$TERM" == "linux" ] ; then
@@ -121,11 +123,22 @@ if [ "$TERM" == "linux" ] ; then
     sleep 1
   done
 fi
+```
+
+- Set console auto login: `sudo raspi-config`
 
 
-# console auto login
-sudo raspi-config 
-
-
-# troubleshooting
+### LCD troubleshooting
 dmesg|grep "fb\|graphics\|display\|touch\|ads"
+
+
+
+### LCD-show (broken)
+Reference: https://github.com/goodtft/LCD-show/
+```
+sudo rm -rf LCD-show
+git clone https://github.com/goodtft/LCD-show.git
+chmod -R 755 LCD-show
+cd LCD-show/
+sudo ./LCD35-show
+```
