@@ -128,7 +128,10 @@ if [ "$TERM" == "linux" ] ; then
 fi
 ```
 
-- Set console auto login: `sudo raspi-config`
+- Set console auto login: 
+`sudo raspi-config`
+  - S5 Boot / Auto Login
+    - B2 Console Autologin
 
 
 ### 8. Setup port forwarding and DNS
