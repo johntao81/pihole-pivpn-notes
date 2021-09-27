@@ -129,7 +129,7 @@ fi
 ```
 
 - Set console auto login: 
-`sudo raspi-config`
+  - `sudo raspi-config`
   - S5 Boot / Auto Login
     - B2 Console Autologin
 
@@ -142,7 +142,22 @@ fi
 
 ### LCD troubleshooting
 `dmesg | grep "fb\|graphics\|display\|touch\|ads"`
-
+```
+[    0.000000] Kernel command line: coherent_pool=1M 8250.nr_uarts=1 snd_bcm2835.enable_compat_alsa=0 snd_bcm2835.enable_hdmi=1 bcm2708_fb.fbwidth=640 bcm2708_fb.fbheight=480 bcm2708_fb.fbswap=1 vc_mem.mem_base=0x3ec00000 vc_mem.mem_size=0x40000000  console=ttyS0,115200 console=tty1 root=PARTUUID=fd714c66-02 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait fbcon=map:10 fbcon=font:ProFont6x11
+[    1.954558] bcm2708_fb soc:fb: FB found 1 display(s)
+[    1.974901] bcm2708_fb soc:fb: Registered framebuffer for display 0, size 640x480
+[   10.165855] fbtft: module is from the staging directory, the quality is unknown, you have been warned.
+[   10.173752] fb_ili9486: module is from the staging directory, the quality is unknown, you have been warned.
+[   10.174981] fb_ili9486 spi0.0: fbtft_property_value: regwidth = 16
+[   10.175008] fb_ili9486 spi0.0: fbtft_property_value: buswidth = 8
+[   10.175032] fb_ili9486 spi0.0: fbtft_property_value: debug = 0
+[   10.175052] fb_ili9486 spi0.0: fbtft_property_value: rotate = 90
+[   10.175074] fb_ili9486 spi0.0: fbtft_property_value: fps = 30
+[   10.175092] fb_ili9486 spi0.0: fbtft_property_value: txbuflen = 32768
+[   10.328244] ads7846 spi0.1: supply vcc not found, using dummy regulator
+[   10.330825] ads7846 spi0.1: touchscreen, irq 200
+[   10.837908] graphics fb1: fb_ili9486 frame buffer, 480x320, 300 KiB video memory, 32 KiB buffer memory, fps=33, spi0.0 at 16 MHz
+```
 
 
 ### LCD-show (broken)
