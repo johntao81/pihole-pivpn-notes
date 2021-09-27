@@ -3,7 +3,7 @@ Notes for installing PiHole and PiVPN on Raspberry Pi
 
 ### 1. Prepare the Raspberry Pi
 - Download the Raspberry Pi OS Lite image: https://www.raspberrypi.org/software/operating-systems/
-- Create the `ssh` file to enable ssh
+- Burn the image and enable `ssh`
 - `ssh raspberrypi.local`
 - `sudo raspi-config`
  - 1 System Options
