@@ -77,7 +77,6 @@ sudo systemctl status cloudflared
 ```
 sudo rm -rf LCD-show && \
 git clone https://github.com/goodtft/LCD-show.git && \
-chmod -R 755 LCD-show && \
 cd LCD-show/
 ```
 1. `sudo cp ./usr/tft35a-overlay.dtb /boot/overlays/tft35a.dtbo`
