@@ -135,7 +135,7 @@ fi
 
 
 ### LCD troubleshooting
-dmesg|grep "fb\|graphics\|display\|touch\|ads"
+`dmesg | grep "fb\|graphics\|display\|touch\|ads"`
 
 
 
