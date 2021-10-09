@@ -76,6 +76,7 @@ sudo systemctl status cloudflared
 
 - Guide: https://docs.pivpn.io/wireguard/
 - DDNS: https://docs.pivpn.io/guides/dynamic-dns/
+- Update `pivpnHOST`: `sudo nano /etc/pivpn/wireguard/setupVars.conf`
 
 
 
