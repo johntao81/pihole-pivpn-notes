@@ -75,6 +75,7 @@ sudo systemctl status cloudflared
 3. Display QR code: `pivpn -qr`
 
 - Guide: https://docs.pivpn.io/wireguard/
+- DDNS: https://docs.pivpn.io/guides/dynamic-dns/
 
 
 
