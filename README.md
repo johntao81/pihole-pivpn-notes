@@ -74,6 +74,8 @@ sudo systemctl status cloudflared
 2. Add users: `pivpn add`
 3. Display QR code: `pivpn -qr`
 
+- Guide: https://docs.pivpn.io/wireguard/
+
 
 
 ### 5. Set up LCD-show
