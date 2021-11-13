@@ -15,7 +15,7 @@ Notes for installing PiHole and PiVPN on Raspberry Pi
    - P1 Camera
    - P3 VNC (for the desktop image)
    - P5 I2C (for the SSD1306 LCDs)
-- `sudo apt update -y && sudo apt upgrade -y && sudo apt autoremove -y`
+- `sudo apt update -y && sudo apt full-upgrade -y && sudo apt autoremove -y`
 
 
 ### 2. Install PiHole
